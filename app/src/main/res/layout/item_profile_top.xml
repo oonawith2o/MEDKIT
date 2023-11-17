@@ -15,7 +15,6 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             app:cardCornerRadius="15dp"
             app:cardElevation="10dp"
             app:cardUseCompatPadding="true"
@@ -42,14 +41,20 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="Oona Kintscher"
+                    android:textAllCaps="true"
                     android:textColor="@color/dark_turquoise"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/dark_turquoise"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="3">
@@ -88,7 +93,5 @@
         </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
-
-
 
 </RelativeLayout>

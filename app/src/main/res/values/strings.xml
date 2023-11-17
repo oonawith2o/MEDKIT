@@ -1,3 +1,21 @@
 <resources>
+
     <string name="app_name">MEDKIT</string>
+
+    <string-array name="biological_sex">
+        <item>Female</item>
+        <item>Male</item>
+    </string-array>
+
+    <string-array name="blood_type">
+        <item>0 Negative</item>
+        <item>0 Positive</item>
+        <item>A Negative</item>
+        <item>A Positive</item>
+        <item>B Negative</item>
+        <item>B Positive</item>
+        <item>AB Negative</item>
+        <item>AB Positive</item>
+    </string-array>
+
 </resources>

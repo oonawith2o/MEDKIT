@@ -1,5 +1,7 @@
 package com.example.medkit;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -28,9 +30,25 @@ public class EditProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        backButton = findViewById(R.id.backButton);
+        dateButton = findViewById(R.id.birthdayButton);
+        saveButton = findViewById(R.id.saveButton);
+        Spinner spinnerSex = (Spinner) findViewById(R.id.sexButton);
+        Spinner spinnerBloodType = (Spinner) findViewById(R.id.bloodTypeButton);
+        Spinner spinnerRelation = (Spinner) findViewById(R.id.relationButton);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(bundle!=null) {
+            String origin = bundle.getString("origin");
+            if(origin!=null && origin.equals("SignUp")) {
+                backButton.hide();
+            }
+        }
+
         initDatePicker();
 
-        dateButton = findViewById(R.id.birthdayButton);
         dateButton.setText(getTodaysDate());
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,8 +56,6 @@ public class EditProfile extends AppCompatActivity {
                 openDatePicker(findViewById(android.R.id.content).getRootView());
             }
         });
-
-        backButton = findViewById(R.id.backButton);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,8 +65,6 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-        saveButton = findViewById(R.id.saveButton);
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +73,6 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-        Spinner spinnerSex = (Spinner) findViewById(R.id.sexButton);
         ArrayAdapter<CharSequence> adapterSex = ArrayAdapter.createFromResource(
                 this,
                 R.array.biological_sex,
@@ -68,7 +81,6 @@ public class EditProfile extends AppCompatActivity {
         adapterSex.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSex.setAdapter(adapterSex);
 
-        Spinner spinnerBloodType = (Spinner) findViewById(R.id.bloodTypeButton);
         ArrayAdapter<CharSequence> adapterBloodType = ArrayAdapter.createFromResource(
                 this,
                 R.array.blood_type,
@@ -77,7 +89,7 @@ public class EditProfile extends AppCompatActivity {
         adapterBloodType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBloodType.setAdapter(adapterBloodType);
 
-        Spinner spinnerRelation = (Spinner) findViewById(R.id.relationButton);
+
         ArrayAdapter<CharSequence> adapterRelation = ArrayAdapter.createFromResource(
                 this,
                 R.array.relation,

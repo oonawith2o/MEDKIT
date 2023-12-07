@@ -64,6 +64,15 @@ public class EditProfile extends AppCompatActivity {
         );
         adapterBloodType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBloodType.setAdapter(adapterBloodType);
+
+        Spinner spinnerRelation = (Spinner) findViewById(R.id.relationButton);
+        ArrayAdapter<CharSequence> adapterRelation = ArrayAdapter.createFromResource(
+                this,
+                R.array.relation,
+                R.layout.spinner_list
+        );
+        adapterRelation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRelation.setAdapter(adapterRelation);
     }
 
     private String getTodaysDate()

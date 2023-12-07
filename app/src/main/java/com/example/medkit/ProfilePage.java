@@ -11,12 +11,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class ProfilePage extends AppCompatActivity {
 
     FloatingActionButton settingsButton;
+    FloatingActionButton logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page);
+
         settingsButton = findViewById(R.id.editButton);
+        logoutButton = findViewById(R.id.logoutButton);
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,6 +28,15 @@ public class ProfilePage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

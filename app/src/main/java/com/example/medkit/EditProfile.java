@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -21,6 +22,7 @@ public class EditProfile extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
     private FloatingActionButton backButton;
+    private ExtendedFloatingActionButton saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,16 @@ public class EditProfile extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
 
         backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
+                startActivity(intent);
+            }
+        });
+
+        saveButton = findViewById(R.id.saveButton);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfilePage.class);

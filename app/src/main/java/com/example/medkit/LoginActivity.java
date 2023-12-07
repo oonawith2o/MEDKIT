@@ -3,6 +3,7 @@ package com.example.medkit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -14,6 +15,7 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     DatabaseHelper databaseHelper;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         databaseHelper = new DatabaseHelper(this);
+
+        sharedPref = getSharedPreferences("login", MODE_PRIVATE);
+
+        if(sharedPref.getBoolean("logged", false)) {
+            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
+            startActivity(intent);
+        }
 
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (checkCredentials == true) {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        sharedPref.edit().putBoolean("logged", true).apply();
                         Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
                         startActivity(intent);
                     } else {

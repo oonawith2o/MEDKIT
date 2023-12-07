@@ -61,6 +61,7 @@
 
                     <Button
                         style="@style/Widget.AppCompat.Button.Borderless"
+                        android:id="@+id/Profile_Vaccination_Button"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -70,6 +71,7 @@
 
                     <Button
                         style="@style/Widget.AppCompat.Button.Borderless"
+                        android:id="@+id/Profile_HealthInsurance_Button"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -79,6 +81,7 @@
 
                     <Button
                         style="@style/Widget.AppCompat.Button.Borderless"
+                        android:id="@+id/Profile_XRay_Button"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"

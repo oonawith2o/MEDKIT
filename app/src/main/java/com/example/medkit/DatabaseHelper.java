@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private ByteArrayOutputStream byteArrayOutputStream;
     private byte[] byteImage;
 
-    private static String createTableQuery = "Create table User(email TEXT primary key, password TEXT, " +
+    private static String createTableQuery_User = "Create table User(email TEXT primary key, password TEXT, " +
             "name TEXT, mobile TEXT, address TEXT, birthday TEXT, biologicalSex TEXT, bloodType TEXT," +
             "allergies TEXT, history TEXT, chronicIllnesses TEXT, emergencyName TEXT, emergencyRelation TEXT," +
             "emergencyMobile TEXT, height INTEGER, weight INTEGER,  profileImage BLOB," +
@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(createTableQuery);
+        db.execSQL(createTableQuery_User);
     }
 
     @Override

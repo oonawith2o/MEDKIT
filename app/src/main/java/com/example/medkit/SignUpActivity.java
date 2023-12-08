@@ -3,6 +3,7 @@ package com.example.medkit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     ActivitySignUpBinding binding;
     DatabaseHelper databaseHelper;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         databaseHelper = new DatabaseHelper(this);
+        sharedPref = getApplicationContext().getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
         binding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,11 +42,11 @@ public class SignUpActivity extends AppCompatActivity {
                             Boolean insert = databaseHelper.insertData(email, password);
 
                             if (insert == true) {
-                                Toast.makeText(SignUpActivity.this, "Signup Successfully", Toast.LENGTH_SHORT).show();
+                                sharedPref.edit().putBoolean("logged", true).apply();
+                                sharedPref.edit().putString("email", binding.signupEmail.getText().toString()).apply();
+                                Toast.makeText(SignUpActivity.this, "Signup Successfully " + binding.signupEmail.getText().toString(), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), EditProfile.class);
                                 intent.putExtra("origin", "SignUp");
-                                intent.putExtra("email", binding.signupEmail.getText().toString());
-                                intent.putExtra("password", binding.signupPassword.getText().toString());
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(SignUpActivity.this, "Signup Failed", Toast.LENGTH_SHORT).show();

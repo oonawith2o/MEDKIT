@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -36,6 +37,8 @@ import java.util.Calendar;
 public class EditProfile extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
+    private SharedPreferences sharedPref;
+
     private DatePickerDialog datePickerDialog;
     private Button dateButton, imageButton;
     private FloatingActionButton backButton;
@@ -57,6 +60,7 @@ public class EditProfile extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         databaseHelper = new DatabaseHelper(this);
+        sharedPref = getApplicationContext().getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
         backButton = findViewById(R.id.backButton);
         dateButton = findViewById(R.id.birthdayButton);
@@ -84,9 +88,7 @@ public class EditProfile extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         if(bundle!=null) {
             String origin = bundle.getString("origin");
-            email = bundle.getString("email");
             if(origin!=null && origin.equals("SignUp")) {
-                emailInput.setText(email);
                 backButton.hide();
                 emailLayout.setVisibility(View.GONE);
             }
@@ -269,6 +271,6 @@ public class EditProfile extends AppCompatActivity {
                 spinnerBloodType.getSelectedItem().toString(), allergiesInput.getText().toString(), historyInput.getText().toString(), chronicIllnessesInput.getText().toString(), emergencyFullNameInput.getText().toString(),
                 spinnerRelation.getSelectedItem().toString(), emergencyMobileInput.getText().toString(), Integer.parseInt(heightInput.getText().toString().toString()), Integer.parseInt(weightInput.getText().toString()), bitmapImage);
 
-        databaseHelper.storeData(user, emailInput.getText().toString());
+        databaseHelper.storeData(user, sharedPref.getString("email", ""));
     }
 }

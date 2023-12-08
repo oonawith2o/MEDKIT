@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class ProfilePage extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
+
     Cursor cursor;
 
     FloatingActionButton settingsButton;
@@ -35,16 +36,6 @@ public class ProfilePage extends AppCompatActivity {
         setContentView(R.layout.activity_profile_page);
 
         databaseHelper = new DatabaseHelper(this);
-        cursor = databaseHelper.getUser();
-
-        /*
-        if (cursor.getCount() == 0) {
-            Toast.makeText(this, "No Profile Details", Toast.LENGTH_SHORT).show();
-        } else {
-            while (cursor.moveToNext()) {
-
-            }
-        }*/
 
         settingsButton = findViewById(R.id.editButton);
         logoutButton = findViewById(R.id.logoutButton);
@@ -55,7 +46,7 @@ public class ProfilePage extends AppCompatActivity {
         healthInsuranceButton = findViewById(R.id.Profile_HealthInsurance_Button);
         xRayButton = findViewById(R.id.Profile_XRay_Button);
 
-        sharedPref = getSharedPreferences("login", MODE_PRIVATE);
+        sharedPref = getApplicationContext().getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +61,7 @@ public class ProfilePage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 sharedPref.edit().putBoolean("logged", false).apply();
+                sharedPref.edit().putString("email", null).apply();
                 startActivity(intent);
             }
         });

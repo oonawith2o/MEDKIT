@@ -2,6 +2,7 @@ package com.example.medkit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-        sharedPref = getSharedPreferences("login", MODE_PRIVATE);
+        sharedPref = getApplicationContext().getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
         if(sharedPref.getBoolean("logged", false)) {
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
@@ -38,15 +39,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = binding.loginEmail.getText().toString();
                 String password = binding.loginPassword.getText().toString();
-
                 if (email.equals("") || password.equals(""))
                     Toast.makeText(LoginActivity.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
                 else {
                     Boolean checkCredentials = databaseHelper.checkEmailPassword(email, password);
-
                     if (checkCredentials == true) {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         sharedPref.edit().putBoolean("logged", true).apply();
+                        sharedPref.edit().putString("email", binding.loginEmail.getText().toString()).apply();
                         Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
                         startActivity(intent);
                     } else {

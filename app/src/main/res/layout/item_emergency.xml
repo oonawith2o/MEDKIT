@@ -44,8 +44,6 @@
             android:layout_height="2dp"
             android:background="@color/dark_brown"/>
 
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +58,7 @@
                 android:src="@drawable/baseline_person_2_24" />
 
             <TextView
+                android:id="@+id/emergencyNameOutput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -85,6 +84,7 @@
                 android:src="@drawable/baseline_group_24" />
 
             <TextView
+                android:id="@+id/emergencyRelationOutput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -109,6 +109,7 @@
                 android:src="@drawable/baseline_phone_enabled_24" />
 
             <TextView
+                android:id="@+id/emergencyMobileOutput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

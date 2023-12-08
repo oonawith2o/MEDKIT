@@ -42,6 +42,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 Toast.makeText(SignUpActivity.this, "Signup Successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), EditProfile.class);
                                 intent.putExtra("origin", "SignUp");
+                                intent.putExtra("email", binding.signupEmail.getText().toString());
+                                intent.putExtra("password", binding.signupPassword.getText().toString());
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(SignUpActivity.this, "Signup Failed", Toast.LENGTH_SHORT).show();

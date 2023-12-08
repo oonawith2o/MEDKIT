@@ -2,48 +2,92 @@ package com.example.medkit;
 
 import static android.app.PendingIntent.getActivity;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 public class EditProfile extends AppCompatActivity {
 
+    private DatabaseHelper databaseHelper;
     private DatePickerDialog datePickerDialog;
-    private Button dateButton;
+    private Button dateButton, imageButton;
     private FloatingActionButton backButton;
     private ExtendedFloatingActionButton saveButton;
+    private Spinner spinnerSex, spinnerBloodType, spinnerRelation;
+    private EditText fullNameInput, heightInput, weightInput, allergiesInput, historyInput, chronicIllnessesInput, emergencyFullNameInput, emergencyMobileInput, mobileInput, emailInput, addressInput;
+    private LinearLayout emailLayout;
+    private ShapeableImageView profileImageInput;
+
+    private Uri uri;
+    private Bitmap bitmapImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        databaseHelper = new DatabaseHelper(this);
 
         backButton = findViewById(R.id.backButton);
         dateButton = findViewById(R.id.birthdayButton);
         saveButton = findViewById(R.id.saveButton);
-        Spinner spinnerSex = (Spinner) findViewById(R.id.sexButton);
-        Spinner spinnerBloodType = (Spinner) findViewById(R.id.bloodTypeButton);
-        Spinner spinnerRelation = (Spinner) findViewById(R.id.relationButton);
+        imageButton = findViewById(R.id.imageButton);
+        spinnerSex = (Spinner) findViewById(R.id.sexButton);
+        spinnerBloodType = (Spinner) findViewById(R.id.bloodTypeButton);
+        spinnerRelation = (Spinner) findViewById(R.id.emergencyRelationButton);
+        fullNameInput = findViewById(R.id.fullNameInput);
+        heightInput = findViewById(R.id.heightInput);
+        weightInput = findViewById(R.id.weightInput);
+        allergiesInput = findViewById(R.id.allergiesInput);
+        historyInput = findViewById(R.id.historyInput);
+        chronicIllnessesInput = findViewById(R.id.chronicIllnessesInput);
+        emergencyFullNameInput = findViewById(R.id.emergencyFullNameInput);
+        emergencyMobileInput = findViewById(R.id.emergencyMobileInput);
+        mobileInput = findViewById(R.id.mobileInput);
+        emailInput = findViewById(R.id.emailInput);
+        addressInput = findViewById(R.id.addressInput);
+        emailLayout = findViewById(R.id.emailLayout);
+        profileImageInput = findViewById(R.id.profileImageInput);
+
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if(bundle!=null) {
             String origin = bundle.getString("origin");
+            String email = bundle.getString("email");
             if(origin!=null && origin.equals("SignUp")) {
+                if(email!=null) {
+                    emailInput.setText(email);
+                }
                 backButton.hide();
+                emailLayout.setVisibility(View.GONE);
             }
         }
 
@@ -58,14 +102,6 @@ public class EditProfile extends AppCompatActivity {
         });
 
         backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
-                startActivity(intent);
-            }
-        });
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
@@ -97,6 +133,49 @@ public class EditProfile extends AppCompatActivity {
         );
         adapterRelation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRelation.setAdapter(adapterRelation);
+
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    assert data != null;
+                    uri = data.getData();
+                    try {
+                        bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    } catch (IOException e) {
+                        Toast.makeText(EditProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    profileImageInput.setImageBitmap(bitmapImage);
+                } else {
+                    Toast.makeText(EditProfile.this, "No Image Selected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    activityResultLauncher.launch(intent);
+                } catch (Exception e) {
+                    Toast.makeText(EditProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storeData();
+                Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private String getTodaysDate()
@@ -174,5 +253,13 @@ public class EditProfile extends AppCompatActivity {
     public void openDatePicker(View view)
     {
         datePickerDialog.show();
+    }
+
+    private void storeData() {
+        User user = new User(fullNameInput.getText().toString(), mobileInput.getText().toString(), addressInput.getText().toString(), dateButton.getText().toString().toString(), spinnerSex.toString(),
+                spinnerBloodType.toString(), allergiesInput.getText().toString(), historyInput.getText().toString(), chronicIllnessesInput.getText().toString(), emergencyFullNameInput.getText().toString(),
+                spinnerRelation.toString(), emergencyMobileInput.getText().toString(), Integer.parseInt(heightInput.getText().toString().toString()), Integer.parseInt(weightInput.getText().toString()), bitmapImage);
+
+        databaseHelper.storeData(user, emailInput.getText().toString());
     }
 }

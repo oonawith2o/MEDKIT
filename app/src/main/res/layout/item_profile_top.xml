@@ -27,6 +27,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profileImageOutput"
                     android:layout_width="98dp"
                     android:layout_height="98dp"
                     android:layout_gravity="center"
@@ -36,6 +37,7 @@
                     android:src="@drawable/profile" />
 
                 <TextView
+                    android:id="@+id/fullNameOutput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -43,6 +44,8 @@ public class EditProfile extends AppCompatActivity {
     private EditText fullNameInput, heightInput, weightInput, allergiesInput, historyInput, chronicIllnessesInput, emergencyFullNameInput, emergencyMobileInput, mobileInput, emailInput, addressInput;
     private LinearLayout emailLayout;
     private ShapeableImageView profileImageInput;
+
+    private String email;
 
     private Uri uri;
     private Bitmap bitmapImage;
@@ -81,11 +84,9 @@ public class EditProfile extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         if(bundle!=null) {
             String origin = bundle.getString("origin");
-            String email = bundle.getString("email");
+            email = bundle.getString("email");
             if(origin!=null && origin.equals("SignUp")) {
-                if(email!=null) {
-                    emailInput.setText(email);
-                }
+                emailInput.setText(email);
                 backButton.hide();
                 emailLayout.setVisibility(View.GONE);
             }
@@ -171,9 +172,13 @@ public class EditProfile extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                storeData();
-                Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
-                startActivity(intent);
+                if (fullNameInput.getText().toString().equals("")) {
+                    Toast.makeText(EditProfile.this, "Name field is mandatory", Toast.LENGTH_SHORT).show();
+                } else {
+                    storeData();
+                    Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -256,9 +261,13 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void storeData() {
-        User user = new User(fullNameInput.getText().toString(), mobileInput.getText().toString(), addressInput.getText().toString(), dateButton.getText().toString().toString(), spinnerSex.toString(),
-                spinnerBloodType.toString(), allergiesInput.getText().toString(), historyInput.getText().toString(), chronicIllnessesInput.getText().toString(), emergencyFullNameInput.getText().toString(),
-                spinnerRelation.toString(), emergencyMobileInput.getText().toString(), Integer.parseInt(heightInput.getText().toString().toString()), Integer.parseInt(weightInput.getText().toString()), bitmapImage);
+
+        if (weightInput.getText().toString().equals("")) { weightInput.setText("-1"); }
+        if (heightInput.getText().toString().equals("")) { heightInput.setText("-1"); }
+
+        User user = new User(fullNameInput.getText().toString(), mobileInput.getText().toString(), addressInput.getText().toString(), dateButton.getText().toString().toString(), spinnerSex.getSelectedItem().toString(),
+                spinnerBloodType.getSelectedItem().toString(), allergiesInput.getText().toString(), historyInput.getText().toString(), chronicIllnessesInput.getText().toString(), emergencyFullNameInput.getText().toString(),
+                spinnerRelation.getSelectedItem().toString(), emergencyMobileInput.getText().toString(), Integer.parseInt(heightInput.getText().toString().toString()), Integer.parseInt(weightInput.getText().toString()), bitmapImage);
 
         databaseHelper.storeData(user, emailInput.getText().toString());
     }

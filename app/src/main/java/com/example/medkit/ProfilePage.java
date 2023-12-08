@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,6 +24,8 @@ public class ProfilePage extends AppCompatActivity {
     Button healthInsuranceButton;
     Button xRayButton;
 
+    TextView emailOutput;
+
     SharedPreferences sharedPref;
 
     @Override
@@ -34,16 +37,19 @@ public class ProfilePage extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         cursor = databaseHelper.getUser();
 
+        /*
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "No Profile Details", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
 
             }
-        }
+        }*/
 
         settingsButton = findViewById(R.id.editButton);
         logoutButton = findViewById(R.id.logoutButton);
+
+        emailOutput = findViewById(R.id.emailOutput);
 
         vaccinationButton = findViewById(R.id.Profile_Vaccination_Button);
         healthInsuranceButton = findViewById(R.id.Profile_HealthInsurance_Button);

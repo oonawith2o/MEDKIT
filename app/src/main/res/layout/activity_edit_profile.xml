@@ -80,7 +80,7 @@
                         android:elevation="15dp"
                         android:padding="5dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/profile" />
+                        android:src="@drawable/default_user" />
 
                     <Button
                         android:id="@+id/imageButton"

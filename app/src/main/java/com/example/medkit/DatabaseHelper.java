@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -67,8 +68,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Boolean checkEmailPassword(String email, String password) {
-        SQLiteDatabase myDB = this.getWritableDatabase();
-        Cursor cursor = myDB.rawQuery("Select * from User where email = ? and password = ?", new String[] {email, password});
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery("Select * from User where email = ? and password = ?", new String[] {email, password});
 
         if (cursor.getCount() > 0) {
             return true;
@@ -113,24 +114,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getUser(){
+    public User retrieveData(String email) {
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor cursor = database.rawQuery("Select * from User", null);
-        return cursor;
+        Cursor cursor = database.rawQuery("Select * from User where email = ?", new String[] {email});
+        User user = null;
+
+        if (cursor.getCount() == 0) {
+            Toast.makeText(context, "No Profile Found", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()){
+                byte[] imageByte = cursor.getBlob(16);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte,0,imageByte.length);
+
+                user = new User(cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6),
+                                cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getString(10),cursor.getString(11), cursor.getString(12),
+                                cursor.getString(13),cursor.getInt(14), cursor.getInt(15), bitmap);
+            }
+        }
+        return user;
     }
 
+    public Bitmap getImage(String email) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery("Select * from User where email = ?", new String[] {email});
+        if (cursor.getCount() == 0) {
+            Toast.makeText(context, "No Profile Found", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                byte[] imageByte = cursor.getBlob(16);
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length);
+                    Toast.makeText(context, "Saved Image", Toast.LENGTH_SHORT).show();
+                    return bitmap;
+                } catch (Exception e) {
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    return null;
+                }
 
-    /*public void storeImage(User user, String type) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        Bitmap bitmapImage;
-        switch (type) {
-            case "VACCINATION": bitmapImage = user.getVaccinationImage(); break;
-            case "HEALTHCARE": bitmapImage = user.getHealthCareImage(); break;
-            case "XRAY": bitmapImage = user.getXRayImage();
-            default: bitmapImage = user.getProfileImage();
+            }
         }
-        byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byteImage = byteArrayOutputStream.toByteArray();
-    }*/
+        return null;
+    }
 }

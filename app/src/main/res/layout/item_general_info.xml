@@ -45,6 +45,7 @@
             android:background="@color/dark_brown"/>
 
         <LinearLayout
+            android:id="@+id/birthdayLayoutProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -58,11 +59,12 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:text="Birthday"
-                android:textStyle="italic"
                 android:textColor="@color/dark_brown"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                android:textStyle="italic" />
 
             <TextView
+                android:id="@+id/birthdayOutput"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -75,6 +77,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/biologicalSexLayoutProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -93,6 +96,7 @@
                 android:textSize="17sp"/>
 
             <TextView
+                android:id="@+id/biologicalSexOutput"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -105,6 +109,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/heightLayoutProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -123,6 +128,7 @@
                 android:textSize="17sp"/>
 
             <TextView
+                android:id="@+id/heightOutput"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -134,6 +140,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/weightLayoutProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -153,6 +160,7 @@
                 android:textSize="17sp"/>
 
             <TextView
+                android:id="@+id/weightOutput"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -164,6 +172,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/bloodTypeLayoutProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -183,6 +192,7 @@
                 android:textSize="17sp"/>
 
             <TextView
+                android:id="@+id/bloodTypeOutput"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"

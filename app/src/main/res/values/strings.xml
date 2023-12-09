@@ -3,11 +3,13 @@
     <string name="app_name">MEDKIT</string>
 
     <string-array name="biological_sex">
+        <item>SELECT</item>
         <item>Female</item>
         <item>Male</item>
     </string-array>
 
     <string-array name="blood_type">
+        <item>SELECT</item>
         <item>0 Negative</item>
         <item>0 Positive</item>
         <item>A Negative</item>
@@ -19,6 +21,7 @@
     </string-array>
 
     <string-array name="relation">
+        <item>SELECT</item>
         <item>Mother</item>
         <item>Father</item>
         <item>Sibling</item>

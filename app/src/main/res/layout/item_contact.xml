@@ -45,6 +45,7 @@
             android:background="@color/dark_brown"/>
 
         <LinearLayout
+            android:id="@+id/mobileLayoutProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -96,6 +97,7 @@
 
 
             <LinearLayout
+                android:id="@+id/addressLayoutProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

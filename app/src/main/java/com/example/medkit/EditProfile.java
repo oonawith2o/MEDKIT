@@ -14,7 +14,10 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -81,7 +85,9 @@ public class EditProfile extends AppCompatActivity {
         emailInput = findViewById(R.id.emailInput);
         addressInput = findViewById(R.id.addressInput);
         emailLayout = findViewById(R.id.emailLayout);
+
         profileImageInput = findViewById(R.id.profileImageInput);
+        profileImageInput.setDrawingCacheEnabled(true);
 
 
         Intent intent = getIntent();
@@ -185,8 +191,7 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
-    private String getTodaysDate()
-    {
+    public static String getTodaysDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
@@ -195,8 +200,7 @@ public class EditProfile extends AppCompatActivity {
         return makeDateString(day, month, year);
     }
 
-    private void initDatePicker()
-    {
+    private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
         {
             @Override
@@ -221,12 +225,12 @@ public class EditProfile extends AppCompatActivity {
     }
 
 
-    private String makeDateString(int day, int month, int year)
+    private static String makeDateString(int day, int month, int year)
     {
         return getMonthFormat(month) + " " + day + " " + year;
     }
 
-    private String getMonthFormat(int month)
+    private static String getMonthFormat(int month)
     {
         if(month == 1)
             return "JAN";
@@ -266,6 +270,14 @@ public class EditProfile extends AppCompatActivity {
 
         if (weightInput.getText().toString().equals("")) { weightInput.setText("-1"); }
         if (heightInput.getText().toString().equals("")) { heightInput.setText("-1"); }
+
+        if (bitmapImage == null && databaseHelper.getImage(sharedPref.getString("email", "")) == null) {
+            Toast.makeText(this,"Not Selected & No Image Saved", Toast.LENGTH_SHORT).show();
+            bitmapImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_user);
+        } else if (bitmapImage == null && databaseHelper.getImage(sharedPref.getString("email", "")) != null) {
+            Toast.makeText(this,"Not Selected & No Image Saved", Toast.LENGTH_SHORT).show();
+            bitmapImage = databaseHelper.getImage(sharedPref.getString("email", ""));
+        }
 
         User user = new User(fullNameInput.getText().toString(), mobileInput.getText().toString(), addressInput.getText().toString(), dateButton.getText().toString().toString(), spinnerSex.getSelectedItem().toString(),
                 spinnerBloodType.getSelectedItem().toString(), allergiesInput.getText().toString(), historyInput.getText().toString(), chronicIllnessesInput.getText().toString(), emergencyFullNameInput.getText().toString(),

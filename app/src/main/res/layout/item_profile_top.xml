@@ -33,8 +33,9 @@
                     android:layout_gravity="center"
                     android:elevation="15dp"
                     android:padding="5dp"
+                    android:backgroundTint="@color/white"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/profile" />
+                    android:src="@drawable/default_user" />
 
                 <TextView
                     android:id="@+id/fullNameOutput"

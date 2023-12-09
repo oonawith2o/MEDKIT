@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -48,11 +49,12 @@ public class EditProfile extends AppCompatActivity {
     private FloatingActionButton backButton;
     private ExtendedFloatingActionButton saveButton;
     private Spinner spinnerSex, spinnerBloodType, spinnerRelation;
-    private EditText fullNameInput, heightInput, weightInput, allergiesInput, historyInput, chronicIllnessesInput, emergencyFullNameInput, emergencyMobileInput, mobileInput, emailInput, addressInput;
+    private EditText fullNameInput, heightInput, weightInput, allergiesInput, historyInput, chronicIllnessesInput,
+                        emergencyFullNameInput, emergencyMobileInput, mobileInput, emailInput, addressInput;
     private LinearLayout emailLayout;
     private ShapeableImageView profileImageInput;
 
-    private String email;
+    private ArrayAdapter<CharSequence> adapterSex, adapterBloodType, adapterRelation;
 
     private Uri uri;
     private Bitmap bitmapImage;
@@ -87,18 +89,6 @@ public class EditProfile extends AppCompatActivity {
         emailLayout = findViewById(R.id.emailLayout);
 
         profileImageInput = findViewById(R.id.profileImageInput);
-        profileImageInput.setDrawingCacheEnabled(true);
-
-
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if(bundle!=null) {
-            String origin = bundle.getString("origin");
-            if(origin!=null && origin.equals("SignUp")) {
-                backButton.hide();
-                emailLayout.setVisibility(View.GONE);
-            }
-        }
 
         initDatePicker();
 
@@ -118,7 +108,7 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<CharSequence> adapterSex = ArrayAdapter.createFromResource(
+        adapterSex = ArrayAdapter.createFromResource(
                 this,
                 R.array.biological_sex,
                 R.layout.spinner_list
@@ -126,7 +116,7 @@ public class EditProfile extends AppCompatActivity {
         adapterSex.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSex.setAdapter(adapterSex);
 
-        ArrayAdapter<CharSequence> adapterBloodType = ArrayAdapter.createFromResource(
+        adapterBloodType = ArrayAdapter.createFromResource(
                 this,
                 R.array.blood_type,
                 R.layout.spinner_list
@@ -135,13 +125,26 @@ public class EditProfile extends AppCompatActivity {
         spinnerBloodType.setAdapter(adapterBloodType);
 
 
-        ArrayAdapter<CharSequence> adapterRelation = ArrayAdapter.createFromResource(
+        adapterRelation = ArrayAdapter.createFromResource(
                 this,
                 R.array.relation,
                 R.layout.spinner_list
         );
         adapterRelation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRelation.setAdapter(adapterRelation);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(bundle!=null) {
+            String origin = bundle.getString("origin");
+            if(origin!=null && origin.equals("SignUp")) {
+                backButton.hide();
+                emailLayout.setVisibility(View.GONE);
+            } else if (origin!=null && origin.equals("Profile")) {
+                this.setFields();
+                emailLayout.setVisibility(View.GONE);
+            }
+        }
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -266,16 +269,42 @@ public class EditProfile extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    private void setFields() {
+        String email = sharedPref.getString("email", "");
+        User user = databaseHelper.retrieveData(email);
+
+        fullNameInput.setText(user.getName());
+        profileImageInput.setImageBitmap(user.getProfileImage());
+        dateButton.setText(user.getBirthday());
+
+        int sexSpinnerPosition = adapterSex.getPosition(user.getBiologicalSex());
+        spinnerSex.setSelection(sexSpinnerPosition);
+        if (String.valueOf(user.getHeight()).equals("-1")) { heightInput.setText(""); } else { heightInput.setText(String.valueOf(user.getHeight())); }
+        if (String.valueOf(user.getWeight()).equals("-1")) { weightInput.setText(""); } else { weightInput.setText(String.valueOf(user.getWeight())); }
+        int bloodTypeSpinnerPosition = adapterBloodType.getPosition(user.getBloodType());
+        spinnerBloodType.setSelection(bloodTypeSpinnerPosition);
+
+        allergiesInput.setText(user.getAllergies());
+        historyInput.setText(user.getHistory());
+        chronicIllnessesInput.setText(user.getChronicIllnesses());
+
+        emergencyFullNameInput.setText(user.getEmergencyName());
+        int emergencyRelationPosition = adapterRelation.getPosition(user.getEmergencyRelation());
+        spinnerRelation.setSelection(emergencyRelationPosition);
+        emergencyMobileInput.setText(user.getEmergencyMobile());
+
+        mobileInput.setText(user.getMobile());
+        addressInput.setText(user.getAddress());
+    }
+
     private void storeData() {
 
         if (weightInput.getText().toString().equals("")) { weightInput.setText("-1"); }
         if (heightInput.getText().toString().equals("")) { heightInput.setText("-1"); }
 
         if (bitmapImage == null && databaseHelper.getImage(sharedPref.getString("email", "")) == null) {
-            Toast.makeText(this,"Not Selected & No Image Saved", Toast.LENGTH_SHORT).show();
             bitmapImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_user);
         } else if (bitmapImage == null && databaseHelper.getImage(sharedPref.getString("email", "")) != null) {
-            Toast.makeText(this,"Not Selected & No Image Saved", Toast.LENGTH_SHORT).show();
             bitmapImage = databaseHelper.getImage(sharedPref.getString("email", ""));
         }
 

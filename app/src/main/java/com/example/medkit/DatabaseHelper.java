@@ -144,10 +144,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 byte[] imageByte = cursor.getBlob(16);
                 try {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length);
-                    Toast.makeText(context, "Saved Image", Toast.LENGTH_SHORT).show();
                     return bitmap;
                 } catch (Exception e) {
-                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                     return null;
                 }
 

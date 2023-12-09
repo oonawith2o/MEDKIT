@@ -36,6 +36,7 @@ public class ProfilePage extends AppCompatActivity {
                 emergencyMobileOutput, mobileOutput, emailOutput, addressOutput;
     LinearLayout birthdayLayout, biologicalSexLayout, heightLayout, weightLayout, bloodTypeLayout, emergencyNameLayout,
                     emergencyRelationLayout, emergencyMobileLayout, mobileLayout, addressLayout;
+    View generalInfoSeparator, emergencyContactSeparator, contactSeparator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,10 @@ public class ProfilePage extends AppCompatActivity {
         mobileLayout = findViewById(R.id.mobileLayoutProfile);
         addressLayout = findViewById(R.id.addressLayoutProfile);
 
+        generalInfoSeparator = findViewById(R.id.generalInfoSeparator);
+        contactSeparator = findViewById(R.id.contactSeparator);
+        emergencyContactSeparator = findViewById(R.id.emergencyContactSeparator);
+
         vaccinationButton = findViewById(R.id.Profile_Vaccination_Button);
         healthInsuranceButton = findViewById(R.id.Profile_HealthInsurance_Button);
         xRayButton = findViewById(R.id.Profile_XRay_Button);
@@ -89,6 +94,7 @@ public class ProfilePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EditProfile.class);
+                intent.putExtra("origin", "Profile");
                 startActivity(intent);
             }
         });
@@ -126,12 +132,23 @@ public class ProfilePage extends AppCompatActivity {
         if (String.valueOf(user.getHeight()).equals("-1")) { heightLayout.setVisibility(View.GONE); } else { heightOutput.setText(String.valueOf(user.getHeight())); }
         if (String.valueOf(user.getWeight()).equals("-1")) { weightLayout.setVisibility(View.GONE); } else { weightOutput.setText(String.valueOf(user.getWeight())); }
         if (user.getBloodType().equals("SELECT")) { bloodTypeLayout.setVisibility(View.GONE); } else { bloodTypeOutput.setText(user.getBloodType()); }
-        if (user.getAllergies().equals("")) { allergiesOutput.setText("n/a.");} else { allergiesOutput.setText(user.getAllergies()); }
+
+        if (user.getBirthday().equals(EditProfile.getTodaysDate()) && user.getBiologicalSex().equals("SELECT") && String.valueOf(user.getHeight()).equals("-1") && String.valueOf(user.getWeight()).equals("-1") && user.getBloodType().equals("SELECT")) {
+            generalInfoSeparator.setVisibility(View.GONE);
+        }
+
+        if (user.getAllergies().equals("")) { allergiesOutput.setText("n/a");} else { allergiesOutput.setText(user.getAllergies()); }
         if (user.getHistory().equals("")) { historyOutput.setText("n/a");} else { historyOutput.setText(user.getHistory()); }
         if (user.getChronicIllnesses().equals("")) { chronicIllnessesOutput.setText("n/a"); } else { chronicIllnessesOutput.setText(user.getChronicIllnesses());}
+
         if (user.getEmergencyName().equals("")) { emergencyNameLayout.setVisibility(View.GONE); } else { emergencyNameOutput.setText(user.getEmergencyName()); }
         if (user.getEmergencyRelation().equals("SELECT")) { emergencyRelationLayout.setVisibility(View.GONE); } else {  emergencyRelationOutput.setText(user.getBiologicalSex()); }
         if (user.getEmergencyMobile().equals("")) { emergencyMobileLayout.setVisibility(View.GONE); } else { emergencyMobileOutput.setText(user.getEmergencyMobile()); }
+
+        if (user.getEmergencyName().equals("") && user.getEmergencyRelation().equals("SELECT") && user.getEmergencyMobile().equals("")) {
+            emergencyContactSeparator.setVisibility(View.GONE);
+        }
+
         if (user.getMobile().equals("")) { mobileLayout.setVisibility(View.GONE); } else { mobileOutput.setText(user.getMobile()); }
         if (user.getAddress().equals("")) { addressLayout.setVisibility(View.GONE); } else { addressOutput.setText(user.getAddress()); }
 

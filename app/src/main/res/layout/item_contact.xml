@@ -14,32 +14,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="0.8"
-                android:text="Contact Information"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/dark_brown" />
-
-            <ImageButton
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/baseline_border_color_24"
-                app:tint="@color/dark_beige"/>
-
-        </LinearLayout>
+            android:text="Contact Information"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:textColor="@color/dark_brown" />
 
         <View
+            android:id="@+id/contactSeparator"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/dark_brown"/>

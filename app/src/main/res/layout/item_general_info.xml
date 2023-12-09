@@ -14,32 +14,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_margin="10dp">
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="0.8"
-                android:text="General Information"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/dark_brown"/>
-
-            <ImageButton
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/baseline_border_color_24"
-                app:tint="@color/dark_beige" />
-
-        </LinearLayout>
+            android:text="General Information"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_brown"/>
 
         <View
+            android:id="@+id/generalInfoSeparator"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/dark_brown"/>
@@ -129,10 +114,20 @@
 
             <TextView
                 android:id="@+id/heightOutput"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:text="173cm"
+                android:text="173"
+                android:textAlignment="textEnd"
+                android:textColor="@color/dark_brown"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="cm"
                 android:textAlignment="textEnd"
                 android:textColor="@color/dark_brown"
                 android:textSize="17sp"/>
@@ -161,10 +156,20 @@
 
             <TextView
                 android:id="@+id/weightOutput"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:text="65"
+                android:textAlignment="textEnd"
+                android:textColor="@color/dark_brown"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:text="65kg"
+                android:text="kg"
                 android:textAlignment="textEnd"
                 android:textColor="@color/dark_brown"
                 android:textSize="17sp"/>

@@ -56,6 +56,7 @@
             android:orientation="vertical">
 
             <include
+                android:id="@+id/generalInfoCard"
                 layout="@layout/item_general_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

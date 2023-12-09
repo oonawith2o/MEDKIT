@@ -302,10 +302,10 @@ public class EditProfile extends AppCompatActivity {
         if (weightInput.getText().toString().equals("")) { weightInput.setText("-1"); }
         if (heightInput.getText().toString().equals("")) { heightInput.setText("-1"); }
 
-        if (bitmapImage == null && databaseHelper.getImage(sharedPref.getString("email", "")) == null) {
+        if (bitmapImage == null && databaseHelper.getImage(sharedPref.getString("email", ""), "PROFILE") == null) {
             bitmapImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_user);
-        } else if (bitmapImage == null && databaseHelper.getImage(sharedPref.getString("email", "")) != null) {
-            bitmapImage = databaseHelper.getImage(sharedPref.getString("email", ""));
+        } else if (bitmapImage == null && databaseHelper.getImage(sharedPref.getString("email", ""), "PROFILE") != null) {
+            bitmapImage = databaseHelper.getImage(sharedPref.getString("email", ""), "PROFILE");
         }
 
         User user = new User(fullNameInput.getText().toString(), mobileInput.getText().toString(), addressInput.getText().toString(), dateButton.getText().toString().toString(), spinnerSex.getSelectedItem().toString(),

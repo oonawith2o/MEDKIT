@@ -108,7 +108,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long checkQuery = database.update("User", contentValues, "email = ?", whereArgs);
         if(checkQuery != -1) {
             Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
-            // database.close()
         } else {
             Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
@@ -134,7 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    public Bitmap getImage(String email) {
+    public Bitmap getImage(String email, String type) {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery("Select * from User where email = ?", new String[] {email});
         if (cursor.getCount() == 0) {
@@ -142,15 +141,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             while (cursor.moveToNext()) {
                 byte[] imageByte = cursor.getBlob(16);
+                switch (type) {
+                    case "PROFILE": imageByte = cursor.getBlob(16); break;
+                    case "VACCINATION": imageByte = cursor.getBlob(17); break;
+                    case "HEALTHCARE": imageByte = cursor.getBlob(18); break;
+                    case "XRAY": imageByte = cursor.getBlob(19); break;
+                }
                 try {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length);
                     return bitmap;
                 } catch (Exception e) {
                     return null;
                 }
-
             }
         }
         return null;
+    }
+
+    public void setImage(String email, Bitmap image, String type) {
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byteImage = byteArrayOutputStream.toByteArray();
+
+        ContentValues contentValues = new ContentValues();
+        switch (type) {
+            case "PROFILE": contentValues.put("profileImage", byteImage); break;
+            case "VACCINATION": contentValues.put("vaccinationImage", byteImage); break;
+            case "HEALTHCARE": contentValues.put("healthCareImage", byteImage); break;
+            case "XRAY": contentValues.put("xRayImage", byteImage); break;
+        }
+
+        String[] whereArgs = new String[] {email};
+        database.update("User", contentValues, "email = ?", whereArgs);
     }
 }

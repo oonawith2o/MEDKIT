@@ -113,6 +113,25 @@ public class ProfilePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), DocumentActivity.class);
+                intent.putExtra("type", "VACCINATION");
+                startActivity(intent);
+            }
+        });
+
+        healthInsuranceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DocumentActivity.class);
+                intent.putExtra("type", "HEALTHCARE");
+                startActivity(intent);
+            }
+        });
+
+        xRayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DocumentActivity.class);
+                intent.putExtra("type", "XRAY");
                 startActivity(intent);
             }
         });

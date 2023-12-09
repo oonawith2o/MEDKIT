@@ -44,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
                             if (insert == true) {
                                 sharedPref.edit().putBoolean("logged", true).apply();
                                 sharedPref.edit().putString("email", binding.signupEmail.getText().toString()).apply();
-                                Toast.makeText(SignUpActivity.this, "Signup Successfully " + binding.signupEmail.getText().toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Signup Successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), EditProfile.class);
                                 intent.putExtra("origin", "SignUp");
                                 startActivity(intent);
